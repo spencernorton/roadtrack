@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please report vulnerabilities privately through GitHub:
-**[Report a vulnerability](https://github.com/spencercnorton/roadtrack/security/advisories/new)**.
+**[Report a vulnerability](https://github.com/spencernorton/roadtrack/security/advisories/new)**.
 Do not open a public issue, and do not include cookies, API keys, vehicle records, hostnames or
 personal details in the report — a description and a minimal reproduction are enough.
 

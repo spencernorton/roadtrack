@@ -6,7 +6,7 @@ services:
   roadtrack:
     # `latest` is the newest release. Pin a release tag (e.g. :v2.0.0) to
     # upgrade on your own schedule; release images never change.
-    image: ghcr.io/spencercnorton/roadtrack:latest
+    image: ghcr.io/spencernorton/roadtrack:latest
     restart: unless-stopped
     init: true
     ports:
