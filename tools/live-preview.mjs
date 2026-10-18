@@ -94,12 +94,14 @@ await appendLocal('**/js/shared.js*', 'brand/roadtrack-ui.js', 'application/java
 await appendLocal('**/css/site.css*', 'brand/roadtrack.css', 'text/css',
                   '/* ── Road Track — NorviTech theme');
 
-for (const file of fs.readdirSync(path.join(REPO, 'brand/metrics'))) {
-    await ctx.route(`**/brand/metrics/${file}*`, (r) => r.fulfill({
-        contentType: file.endsWith('.css') ? 'text/css'
-            : file.endsWith('.html') ? 'text/html' : 'application/javascript',
-        body: local(`brand/metrics/${file}`),
-    }));
+for (const dir of ['brand/metrics', 'brand/reports', 'brand/access']) {
+    for (const file of fs.readdirSync(path.join(REPO, dir))) {
+        await ctx.route(`**/${dir}/${file}*`, (r) => r.fulfill({
+            contentType: file.endsWith('.css') ? 'text/css'
+                : file.endsWith('.html') ? 'text/html' : 'application/javascript',
+            body: local(`${dir}/${file}`),
+        }));
+    }
 }
 
 const page = await ctx.newPage();
@@ -125,7 +127,7 @@ await page.waitForSelector('#rtv-body:not([hidden]), #rt-body:not([hidden])',
         /* Not a Road Track surface at all (a plain LubeLogger page)? Then the
          * generic container is the right thing to wait for. Anything else is a
          * real failure. */
-        if (!page.url().match(/\/Vehicle\/|\/brand\/metrics\//)) return;
+        if (!page.url().match(/\/Vehicle\/|\/brand\/access\//)) return;
         problems.push('TIMEOUT: Road Track content never appeared');
     });
 await page.waitForTimeout(2000);

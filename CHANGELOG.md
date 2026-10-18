@@ -5,6 +5,27 @@ Every release's entry here is also its GitHub Release notes. Versions follow
 
 ## Unreleased
 
+## 2.2.0 — 2026-10-18
+
+Built on LubeLogger v1.7.4 (was v1.7.3). Back up `/App/data` first: going back
+to Road Track 2.1.x, and so to LubeLogger v1.7.3, with the same data is not
+supported.
+
+### Changed, from LubeLogger
+
+- Adding a vehicle through `/api/vehicles/add` now requires an API key with
+  Edit permission rather than Viewer permission.
+- Equipment odometer history in the modal shows cards with a direct attachment
+  button, and root-user claim checks no longer depend on locale number formatting.
+
+### Fixed
+
+- Opening Edit Vehicle on a car that already has both a purchase date and a
+  purchase odometer waits for the saved reading to load before deciding whether
+  to expand the purchase accordion, so complete anchors stay shut.
+- Updated remaining repository and OCI image source links after the GitHub
+  account rename to `spencernorton/roadtrack`.
+
 ## 2.1.1 — 2026-10-06
 
 Still built on LubeLogger v1.7.3; nothing to do but pull the new image.

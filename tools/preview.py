@@ -7,7 +7,7 @@ rendered and eyeballed without real vehicle data. Upstream's own bundles
 running Road Track container and cached under /tmp/rt-preview-cache — delete
 that directory to fetch them again.
 
-    docker run --rm -p 8080:8080 ghcr.io/spencercnorton/roadtrack:latest
+    docker run --rm -p 8080:8080 ghcr.io/spencernorton/roadtrack:latest
     python3 tools/preview.py [port]      → http://127.0.0.1:8899/
 
 An image built from this repository (`docker build -t roadtrack-local .`)
@@ -597,7 +597,7 @@ def page(html):
 
 
 ROUTES = {
-    "/api/info": lambda: {"locale": "en-US", "currentVersion": "1.7.3",
+    "/api/info": lambda: {"locale": "en-US", "currentVersion": "1.7.4",
                           "currencySymbol": "$", "decimalSeparator": ".",
                           "dateFormat": "M/d/yyyy"},
     "/api/vehicles": lambda: VEHICLES,

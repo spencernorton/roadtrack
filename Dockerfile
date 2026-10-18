@@ -7,7 +7,7 @@
 # static files and a small entrypoint.
 #
 # Bumping upstream: change LUBELOGGER_VERSION, nothing else.
-ARG LUBELOGGER_VERSION=v1.7.3
+ARG LUBELOGGER_VERSION=v1.7.4
 # Overridable ONLY so tools/test_build_guard.sh can rebuild THIS Dockerfile —
 # not a copy of it — against a deliberately broken base, and prove the BRAND
 # GUARD checks below actually fail it. Nothing in the pipeline sets this.
@@ -131,7 +131,7 @@ ARG VERSION=dev
 ARG REVISION=unknown
 LABEL org.opencontainers.image.title="Road Track" \
       org.opencontainers.image.description="A dashboard, finance and reporting layer for LubeLogger" \
-      org.opencontainers.image.source="https://github.com/spencercnorton/roadtrack" \
+      org.opencontainers.image.source="https://github.com/spencernorton/roadtrack" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${REVISION}"

@@ -8,7 +8,7 @@ A release is a tag. Pushing `vX.Y.Z` on `main` runs
    with a `## X.Y.Z` entry in [`CHANGELOG.md`](../CHANGELOG.md);
 3. builds the image natively on amd64 and on arm64, and pushes each half as
    `vX.Y.Z-amd64` and `vX.Y.Z-arm64`;
-4. joins the two into `ghcr.io/spencercnorton/roadtrack:vX.Y.Z` and points
+4. joins the two into `ghcr.io/spencernorton/roadtrack:vX.Y.Z` and points
    `latest` at it;
 5. creates the GitHub Release: the CHANGELOG entry as its notes, the source
    tarball, `IMAGE_DIGEST.txt` and `SHA256SUMS.txt`.
@@ -32,7 +32,7 @@ broken release is fixed by the next version, never by re-tagging.
 3. When the Release run is green, check what it published:
 
    ```bash
-   docker buildx imagetools inspect ghcr.io/spencercnorton/roadtrack:vX.Y.Z   # two platforms
+   docker buildx imagetools inspect ghcr.io/spencernorton/roadtrack:vX.Y.Z   # two platforms
    ```
 
 Anyone running `latest` picks the release up on their next pull. Anyone who

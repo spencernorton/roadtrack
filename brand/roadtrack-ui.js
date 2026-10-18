@@ -770,10 +770,10 @@
         try {
             id = Number(window.getVehicleModelData().id) || 0;
         } catch (e) {
-            return;   // Add-vehicle form, or upstream moved the helper.
+            return Promise.resolve();   // Add-vehicle form, or upstream moved the helper.
         }
-        if (!id) return;
-        fetch('/api/vehicles', {
+        if (!id) return Promise.resolve();
+        return fetch('/api/vehicles', {
             headers: { 'culture-invariant': 'true' },
             credentials: 'same-origin',
         })
@@ -836,8 +836,6 @@
             + '“Include purchase & finance” there.';
         panel.appendChild(hint);
 
-        fillPurchaseFields(modal, panel);
-
         var odoField = panel.querySelector('.rt-purchase-odometer');
 
         /* Open the panel when the vehicle has no purchase date yet. It is
@@ -867,28 +865,30 @@
            never have them filled in — so including them would wedge the
            accordion permanently open on every car in the garage, which is how
            a helpful prompt turns into furniture nobody sees. */
-        var dateInput = modal.querySelector('#inputPurchaseDate');
-        var odoInput = odoField && odoField.querySelector('input');
-        var incomplete = (dateInput && !dateInput.value.trim())
-                      || (odoInput && !odoInput.value.trim());
-        if (incomplete) {
-            try {
-                window.bootstrap.Collapse.getOrCreateInstance(panel, {
-                    toggle: false,
-                }).show();
-            } catch (e) {
-                /* No bootstrap global (or an API change): fall back to the
-                   class poke. Worse, but a shut panel the user can still open
-                   beats a thrown error that stops the field being added. */
-                panel.classList.add('show');
-                var button = modal.querySelector(
-                    '[data-bs-target="#collapsePurchaseInfo"]');
-                if (button) {
-                    button.classList.remove('collapsed');
-                    button.setAttribute('aria-expanded', 'true');
+        fillPurchaseFields(modal, panel).then(function () {
+            var dateInput = modal.querySelector('#inputPurchaseDate');
+            var odoInput = odoField && odoField.querySelector('input');
+            var incomplete = (dateInput && !dateInput.value.trim())
+                          || (odoInput && !odoInput.value.trim());
+            if (incomplete) {
+                try {
+                    window.bootstrap.Collapse.getOrCreateInstance(panel, {
+                        toggle: false,
+                    }).show();
+                } catch (e) {
+                    /* No bootstrap global (or an API change): fall back to the
+                       class poke. Worse, but a shut panel the user can still open
+                       beats a thrown error that stops the field being added. */
+                    panel.classList.add('show');
+                    var button = modal.querySelector(
+                        '[data-bs-target="#collapsePurchaseInfo"]');
+                    if (button) {
+                        button.classList.remove('collapsed');
+                        button.setAttribute('aria-expanded', 'true');
+                    }
                 }
             }
-        }
+        });
     }
 
     /* Bootstrap 5.3 dispatches show.bs.modal on the modal element and it
