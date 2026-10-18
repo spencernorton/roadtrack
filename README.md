@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://norvitech.com"><img alt="NorviTech Suite" src="https://img.shields.io/badge/NorviTech-Suite-FD8024.svg"></a>
   <a href="https://github.com/spencernorton/roadtrack/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/spencernorton/roadtrack/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://github.com/spencernorton/roadtrack/tags"><img alt="Latest release" src="https://img.shields.io/github/v/tag/spencercnorton/roadtrack?label=release&sort=semver"></a>
+  <a href="https://github.com/spencernorton/roadtrack/tags"><img alt="Latest release" src="https://img.shields.io/github/v/tag/spencernorton/roadtrack?label=release&sort=semver"></a>
   <a href="#install"><img alt="Docker Compose" src="https://img.shields.io/badge/install-docker%20compose-2496ed.svg?logo=docker&logoColor=white"></a>
   <a href="LICENSE"><img alt="Licence" src="https://img.shields.io/badge/licence-MIT-blue.svg"></a>
   <a href="https://buy.stripe.com/8x26oH2U44f65TRe574wM04"><img alt="Donate" src="https://img.shields.io/badge/donate-Stripe-635bff.svg?logo=stripe&logoColor=white"></a>

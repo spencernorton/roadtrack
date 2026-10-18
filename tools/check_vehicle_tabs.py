@@ -90,7 +90,10 @@ async def main():
             await cmd('Page.enable')
             await cmd('Runtime.enable')
             await cmd('Page.navigate', {'url': PREVIEW})
-            await asyncio.sleep(3)
+            for _ in range(30):
+                await asyncio.sleep(0.5)
+                if await js("!!(window.Chart && Chart.getChart(document.getElementById('rtv-chart-main')))"):
+                    break
 
             checks = {}
 
@@ -507,6 +510,8 @@ async def main():
                 ".every(f=>f.querySelectorAll('input').length === 1)")
             # Complete anchor → the accordion stays shut. The four optional
             # loan boxes must not wedge it open on every vehicle in the garage.
+            checks['complete anchor keeps the purchase accordion shut'] = await js(
+                "!document.getElementById('collapsePurchaseInfo').classList.contains('show')")
             # THE DATA-LOSS GUARD. Upstream draws these boxes EMPTY whenever no
             # vehicle extra-field template is configured (AddExtraFields returns
             # nothing), so saveVehicle() harvests blanks over whatever is stored

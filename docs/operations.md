@@ -5,7 +5,7 @@ only way in. Settings are in [configuration](configuration.md).
 
 ## Pinning and rollback
 
-Each release is published as `ghcr.io/spencercnorton/roadtrack:vX.Y.Z` and
+Each release is published as `ghcr.io/spencernorton/roadtrack:vX.Y.Z` and
 never rebuilt; `latest` moves to each new release. Pin a version tag to
 upgrade when you choose, not whenever the container is next recreated.
 
@@ -83,7 +83,7 @@ In the browser, a Road Track tab that fails to load logs an error prefixed
 LubeLogger signs people in through OpenID Connect with its
 [`OpenIDConfig__*` settings](configuration.md#environment-variables), but its
 "disable regular login" flag alone does not make that the only way in. The
-behaviour below is LubeLogger 1.7.3's, read from its source (unchanged since
+behaviour below is LubeLogger 1.7.4's, read from its source (unchanged since
 1.7.0, except that a refused API request now answers 403 rather than 401).
 
 **What the flag does.** `OpenIDConfig__DisableRegularLogin=true` sends

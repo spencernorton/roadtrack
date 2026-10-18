@@ -1,4 +1,4 @@
-# A `vX.Y.Z` tag on main publishes ghcr.io/spencercnorton/roadtrack:vX.Y.Z for
+# A `vX.Y.Z` tag on main publishes ghcr.io/spencernorton/roadtrack:vX.Y.Z for
 # amd64 and arm64, each built on its own architecture, moves `latest` to it, and
 # creates the GitHub Release from the CHANGELOG entry. Release images are never
 # rebuilt: a tag that already exists in the registry fails the run.
