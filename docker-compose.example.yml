@@ -21,6 +21,7 @@ services:
       TZ: Etc/UTC
       LUBELOGGER_LOGO_URL: /brand/logo.svg
       LUBELOGGER_LOGO_SMALL_URL: /brand/icon.svg
+      LUBELOGGER_RESIZE_THUMBNAIL: "true"
       # Without a locale, money renders with the generic currency sign "¤".
       LUBELOGGER_LOCALE_OVERRIDE: en-US
       # The public address, when the instance sits behind a reverse proxy.

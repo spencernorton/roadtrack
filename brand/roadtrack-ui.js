@@ -1023,11 +1023,11 @@
 
     /* ── Garage posters load as they scroll into view ───────────────────
      *
-     * Every poster is the vehicle's photo as uploaded, often a full-size
-     * camera image behind a tile a few hundred pixels wide. Nothing in the
-     * layer can serve a smaller copy: photos sit behind the app's sign-in,
-     * and a resized copy under /brand/ would be public. What it can do is
-     * stop the posters below the fold downloading before anyone scrolls.
+     * New uploads are resized to card dimensions by installThumbnailResizer(),
+     * while existing photos on an upgraded instance stay at whatever size they
+     * were uploaded at: photos sit behind the app's sign-in, so a static layer
+     * cannot re-serve them from /brand/. Either way, posters below the fold
+     * should not download before anyone scrolls.
      *
      * THE ATTRIBUTE HAS TO BE IN THE MARKUP. garage.js:17 `loadGarage()`
      * inserts the /Home/Garage partial with `$("#garage-tab-pane").html(data)`,
@@ -1075,6 +1075,94 @@
         }, true);
     }
 
+    /* ── Resize vehicle photos on upload ────────────────────────────────
+     *
+     * Garage cards are 145px tall (290px at 2× Retina) and at most 348px
+     * wide (696px at 2×). Without resizing, every garage load transfers and
+     * decodes whatever camera photo or PNG screenshot was originally uploaded
+     * — megabytes of pixels behind a 145px tile.
+     *
+     * Upstream has `uploadThumbnail()` in shared.js, gated on
+     * `LUBELOGGER_RESIZE_THUMBNAIL`, with three sharp edges:
+     *   · it only checks `imgHeight > 290`, so wide banners or opaque PNGs at
+     *     <= 290px height bypass resizing and stay multi-hundred-KB PNGs;
+     *   · it wraps a JPEG blob in `new File([blob], originalImage.name, ...)`,
+     *     keeping a `.png` filename so the server saves JPEG bytes as `.png`;
+     *   · it scales with a four-deep JS loop (`hermiteResize`) on the main
+     *     thread instead of the browser's native 2D canvas scaler.
+     *
+     * Replaced here whenever `resizeThumbnailEnabled` is not explicitly false
+     * (the image sets `LUBELOGGER_RESIZE_THUMBNAIL=true` by default): bound to
+     * 696×290 over the card's dark background (#212529, so transparent PNGs do
+     * not turn black), encode as JPEG at 0.85 with a `.jpg` filename, and keep
+     * the original file if it is already a small JPEG that fits the box.
+     */
+    function installThumbnailResizer() {
+        window.uploadThumbnail = function (event, setUploadedFile) {
+            var originalImage = event && event.files && event.files[0];
+            if (!originalImage) return;
+            var enabled = true;
+            try {
+                var cfg = window.getGlobalConfig && window.getGlobalConfig();
+                if (cfg && cfg.resizeThumbnailEnabled === false) enabled = false;
+            } catch (e) {
+                enabled = true;
+            }
+            if (!enabled || typeof FileReader !== 'function') {
+                window.uploadFileAsync(originalImage, setUploadedFile);
+                return;
+            }
+            var maxW = 696, maxH = 290;
+            var reader = new FileReader();
+            reader.onerror = function () {
+                window.uploadFileAsync(originalImage, setUploadedFile);
+            };
+            reader.onload = function (ev) {
+                var img = new Image();
+                img.onerror = function () {
+                    window.uploadFileAsync(originalImage, setUploadedFile);
+                };
+                img.onload = function () {
+                    var w = img.naturalWidth || img.width;
+                    var h = img.naturalHeight || img.height;
+                    var isJpeg = /^image\/jpe?g$/i.test(originalImage.type || '');
+                    if (!w || !h || (w <= maxW && h <= maxH && isJpeg && originalImage.size <= 102400)) {
+                        window.uploadFileAsync(originalImage, setUploadedFile);
+                        return;
+                    }
+                    var scale = Math.min(1, maxW / w, maxH / h);
+                    var targetW = Math.max(1, Math.round(w * scale));
+                    var targetH = Math.max(1, Math.round(h * scale));
+                    var canvas = document.createElement('canvas');
+                    canvas.width = targetW;
+                    canvas.height = targetH;
+                    var ctx = canvas.getContext('2d');
+                    if (!ctx || typeof canvas.toBlob !== 'function') {
+                        window.uploadFileAsync(originalImage, setUploadedFile);
+                        return;
+                    }
+                    ctx.fillStyle = '#212529';
+                    ctx.fillRect(0, 0, targetW, targetH);
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, 0, 0, targetW, targetH);
+                    canvas.toBlob(function (blob) {
+                        if (!blob) {
+                            window.uploadFileAsync(originalImage, setUploadedFile);
+                            return;
+                        }
+                        var stem = String(originalImage.name || 'thumbnail')
+                            .replace(/\.[^/.]+$/, '') || 'thumbnail';
+                        var resized = new File([blob], stem + '.jpg', { type: 'image/jpeg' });
+                        window.uploadFileAsync(resized, setUploadedFile);
+                    }, 'image/jpeg', 0.85);
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(originalImage);
+        };
+    }
+
     function onReady() {
         inject();
         rebrandAbout();
@@ -1084,6 +1172,7 @@
             hideBrokenPosters();
         }
         installVehicleDashboard();
+        installThumbnailResizer();
         watchVehicleModal();
         addReceiptButton();
     }

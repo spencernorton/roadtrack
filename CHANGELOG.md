@@ -5,6 +5,16 @@ Every release's entry here is also its GitHub Release notes. Versions follow
 
 ## Unreleased
 
+## 2.2.1 — 2026-10-19
+
+Still built on LubeLogger v1.7.4; nothing to do but pull the new image.
+
+### Changed
+
+- `LUBELOGGER_RESIZE_THUMBNAIL=true` is now the image default, and vehicle photo
+  uploads are resized in the browser to `696×290` JPEG (2× the `145px` garage
+  card height) with a `.jpg` filename extension before saving.
+
 ## 2.2.0 — 2026-10-18
 
 Built on LubeLogger v1.7.4 (was v1.7.3). Back up `/App/data` first: going back

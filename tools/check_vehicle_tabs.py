@@ -567,6 +567,37 @@ async def main():
                     ".data.datasets.find(d=>d.label.includes('Running'));"
                     "return !ds.segment;})()")
 
+            # ── Vehicle thumbnail resizer on upload ────────────────────
+            #
+            # Proves a 1280×948 PNG passed to uploadThumbnail() is scaled to
+            # 392×290 (<= 696×290) and converted to an image/jpeg File with a
+            # .jpg filename extension (upstream kept the .png extension even
+            # when encoding JPEG bytes).
+            checks['uploadThumbnail resizes 1280x948 PNG to 392x290 JPEG (.jpg)'] = await js("""
+              new Promise((resolve) => {
+                const src = document.createElement('canvas');
+                src.width = 1280;
+                src.height = 948;
+                const sctx = src.getContext('2d');
+                sctx.fillStyle = '#336699';
+                sctx.fillRect(0, 0, 1280, 948);
+                src.toBlob((pngBlob) => {
+                  const pngFile = new File([pngBlob], 'forester.png', { type: 'image/png' });
+                  window.__rtUploadedFile = null;
+                  window.uploadThumbnail({ files: [pngFile] }, () => {
+                    const out = window.__rtUploadedFile;
+                    if (!out || out.name !== 'forester.jpg' || out.type !== 'image/jpeg') {
+                      resolve(false);
+                      return;
+                    }
+                    const img = new Image();
+                    img.onload = () => resolve(img.naturalWidth === 392 && img.naturalHeight === 290 && out.size < pngFile.size);
+                    img.onerror = () => resolve(false);
+                    img.src = URL.createObjectURL(out);
+                  });
+                }, 'image/png');
+              })""")
+
             checks['no uncaught page errors'] = not errors
 
             ok = True

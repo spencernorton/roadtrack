@@ -124,6 +124,13 @@ COPY LICENSE NOTICE /usr/share/doc/roadtrack/
 COPY --chmod=0755 docker/entrypoint.sh /usr/local/bin/roadtrack-entrypoint
 RUN test -x /App/CarCareTracker \
       || { echo 'BRAND GUARD: /App/CarCareTracker is missing — upstream changed how the app starts; update CMD'; exit 1; }
+# Defaults LubeLogger reads from the environment when a compose file omits them:
+# the Road Track wordmark and navbar icon, plus thumbnail resizing on vehicle
+# photo uploads. Any of these can still be overridden at container start.
+ENV LUBELOGGER_LOGO_URL=/brand/logo.svg \
+    LUBELOGGER_LOGO_SMALL_URL=/brand/icon.svg \
+    LUBELOGGER_RESIZE_THUMBNAIL=true
+
 ENTRYPOINT ["/usr/local/bin/roadtrack-entrypoint"]
 CMD ["./CarCareTracker"]
 
