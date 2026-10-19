@@ -35,6 +35,7 @@ provider, see [Single sign-on only](operations.md#single-sign-on-only).
 | `ROADTRACK_RECEIPT_EMAIL` | an e-mail address | a "Forward the email to *address*" entry: a `mailto:` link whose subject, from a vehicle page, is the vehicle's year, make and model |
 | `LUBELOGGER_LOGO_URL` | `/brand/logo.svg` | the Road Track wordmark on the login page and the garage |
 | `LUBELOGGER_LOGO_SMALL_URL` | `/brand/icon.svg` | the Road Track icon in the navbar |
+| `LUBELOGGER_RESIZE_THUMBNAIL` | `true` (image default) or `false` | resize uploaded vehicle photos in the browser to `696×290` JPEG (2× the garage card size) before saving |
 | `LUBELOGGER_LOCALE_OVERRIDE` | e.g. `en-GB` | number, date and currency formats. Unset, LubeLogger prints money with the generic sign `¤`, and Road Track's charts fall back to `$` |
 | `LUBELOGGER_DOMAIN` | e.g. `https://roadtrack.example.com` | the public address in the links LubeLogger e-mails |
 | `TZ` | e.g. `Europe/London` | the server's time zone |

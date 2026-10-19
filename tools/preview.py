@@ -380,6 +380,7 @@ FIXTURE_VEHICLE = """<!DOCTYPE html>
      exists to preview was the one surface it could not draw, and every check
      against it certified the navbars alone. */
   window.getVehicleReport = function () {};
+  window.uploadFileAsync = function (file, cb) { window.__rtUploadedFile = file; if (cb) cb('/temp/' + file.name); };
 </script>
 <script src="/brand/roadtrack-ui.js"></script>
 </head><body>

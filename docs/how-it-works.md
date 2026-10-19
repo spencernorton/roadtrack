@@ -37,7 +37,7 @@ image at `/usr/share/doc/roadtrack/`.
 | Favicon; installed web app's name and icons | `/favicon.ico` and `/manifest.json` replaced |
 | Apple touch icons and launch screen | three files in `/defaults/` replaced |
 | Browser tab title, iOS home-screen title, one sentence in About | rewritten by `roadtrack-ui.js` |
-| Garage cards drawn as photo posters | `roadtrack.css`, scoped to the garage |
+| Garage cards drawn as photo posters; uploaded vehicle photos resized to 2× card size | `roadtrack.css` and `roadtrack-ui.js` (`LUBELOGGER_RESIZE_THUMBNAIL=true`) |
 | Calendar tab and Household controls hidden | `roadtrack.css`; old `?tab=calendar` links go to the garage |
 | Vehicle Dashboard | `roadtrack-ui.js` replaces upstream's renderer |
 | Finance, Reports and Collaborators tabs; Access tab for administrators | `roadtrack-ui.js` |
