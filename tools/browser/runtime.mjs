@@ -108,15 +108,20 @@ try {
             const total = await page.locator('#rtf-total').innerText();
             const interest = await page.locator('#rtf-interest').innerText();
             assert.ok(Number(total.replace(/[^\d.-]/g, '')) * (/K/.test(total) ? 1000 : 1) > 12000, 'Financed total must include actual interest');
-            assert.ok(Number(interest.replace(/[^\d.-]/g, '')) > 0);
+            assert.ok(Math.abs(Number(interest.replace(/[^\d.-]/g, '')) - 1571.83) < 0.01,
+                'The real stored principal/rate/term must yield the expected loan interest');
             assert.ok(await page.locator('#rtf-chart').evaluate(canvas =>
                 window.Chart.getChart(canvas)?.data.datasets.some(set => set.data.length > 0)), 'The live finance chart must contain data');
             await tab('Reports', 'rt-reports-tab-pane', mobile);
             const report = page.locator('#rt-reports-tab-pane');
+            await report.getByRole('heading', {name: 'Routine maintenance', exact: true}).waitFor();
             await report.getByRole('button', {name: /^Full records/}).click();
+            await report.getByRole('heading', {name: 'Full records', exact: true}).waitFor();
+            assert.ok(await report.locator('select').isVisible(), 'Full records must expose sorting');
             assert.match(await report.innerText(), /Example Runtime Fixture/);
             await report.getByRole('button', {name: /^Cost summary/}).click();
-            await page.waitForFunction(() => document.querySelector('#rt-reports-tab-pane')?.innerText.includes('Cost summary'));
+            await report.getByRole('heading', {name: 'Cost summary', exact: true}).waitFor();
+            assert.ok(!await report.locator('select').isVisible(), 'A cost summary must hide record sorting');
             await tab('Collaborators', 'rt-collab-tab-pane', mobile);
             await page.locator('#rt-collab-tab-pane #collaboratorContent').waitFor();
             await page.locator('#collaboratorContent button[onclick="addCollaborator()"]').click();
