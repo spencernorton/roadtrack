@@ -37,7 +37,21 @@ no tabs and no dashboard. Do not weaken it into a smoke test; that is what
 
 ## Looking at it
 
-Nothing in CI opens a page in a browser, and the UI layer relies on roughly forty
+The required amd64 image job now operates the real candidate in Chromium. It
+creates a synthetic vehicle, verifies that the backend saves the five purchase
+fields, renders the finance chart and reports, opens the collaborator dialog,
+and saves an unchanged edit form without losing values. All four combinations
+of desktop/phone and light/dark are checked, with screenshots, traces, results
+and failed requests retained as CI artifacts. The browser test refuses a
+non-loopback URL or a nonempty garage. Reproduce it with:
+
+```bash
+npm ci --prefix tools/browser
+npx --prefix tools/browser playwright install --with-deps chromium
+SMOKE_BROWSER=1 sh tools/smoke_test.sh
+```
+
+The UI layer relies on roughly forty
 of LubeLogger's selectors, ids and globals. If you change what is drawn, look at
 it.
 

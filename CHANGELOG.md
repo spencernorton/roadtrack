@@ -5,6 +5,11 @@ Every release's entry here is also its GitHub Release notes. Versions follow
 
 ## Unreleased
 
+- Require Chromium to operate the real image at desktop and phone widths in
+  both themes, including purchase-field persistence, finance, reports and
+  collaborator controls.
+
+
 ## 2.2.1 — 2026-10-19
 
 Still built on LubeLogger v1.7.4; nothing to do but pull the new image.

@@ -1,0 +1,11 @@
+{
+  "name": "roadtrack-runtime-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node runtime.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}
