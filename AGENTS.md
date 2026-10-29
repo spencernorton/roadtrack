@@ -57,8 +57,12 @@ sh tools/test_build_guard.sh     # Docker: the guards fire
 sh tools/smoke_test.sh           # Docker: the image builds, starts and serves the layer
 ```
 
-Nothing in CI opens a page. If you change what is drawn, render it with the
-preview harness in [docs/development.md](docs/development.md), at a phone width
+The required amd64 image job opens the real container in Chromium and tests
+vehicle creation, purchase-field persistence, finance, reports and collaborator
+controls at desktop and phone widths in both themes. Run `npm ci --prefix
+tools/browser`, `npx --prefix tools/browser playwright install --with-deps
+chromium`, then `SMOKE_BROWSER=1 sh tools/smoke_test.sh` to reproduce it.
+If you change what is drawn, also render it with the preview harness in [docs/development.md](docs/development.md), at a phone width
 and in dark mode too, before calling it done.
 
 ## Changes

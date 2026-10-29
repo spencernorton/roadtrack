@@ -65,4 +65,8 @@ else
     echo "  FAIL /usr/share/doc/roadtrack/NOTICE is missing"; fail=1
 fi
 
+if [ "$fail" -eq 0 ] && [ "${SMOKE_BROWSER:-0}" = 1 ]; then
+    ROADTRACK_TEST_URL="$base" node tools/browser/runtime.mjs
+fi
+
 if [ "$fail" -eq 0 ]; then echo "smoke test: all checks pass."; else echo "smoke test: FAILED"; exit 1; fi

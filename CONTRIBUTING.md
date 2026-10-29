@@ -24,7 +24,8 @@ sh tools/test_entrypoint.sh      # the runtime settings the entrypoint accepts a
 sh tools/test_build_guard.sh     # needs Docker: proves the build fails when upstream moves a file
 ```
 
-- Nothing in CI opens a page in a browser. If you change what is drawn, run the preview harness in
+- CI operates the real container in Chromium at desktop and phone widths in
+  both themes. If you change what is drawn, also run the preview harness in
   [docs/development.md](docs/development.md) and look at it, on a phone-sized window too.
 - The UI hooks into LubeLogger's own markup and scripts. Name the upstream file and line you rely on
   in a comment, the way the existing code does, so the next upstream upgrade can be checked.

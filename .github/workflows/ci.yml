@@ -64,8 +64,24 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Build, start and probe the image
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Install the pinned browser test runner
+        run: |
+          npm ci --prefix tools/browser
+          npx --prefix tools/browser playwright install --with-deps chromium
+      - name: Build, start and operate the image in a real browser
+        env:
+          SMOKE_BROWSER: "1"
         run: sh tools/smoke_test.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: browser-runtime-evidence
+          path: browser-evidence/
+          if-no-files-found: warn
+          retention-days: 14
   image-arm64:
     name: image (arm64)
     runs-on: ubuntu-24.04-arm
