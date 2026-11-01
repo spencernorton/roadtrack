@@ -5,6 +5,8 @@ Every release's entry here is also its GitHub Release notes. Versions follow
 
 ## Unreleased
 
+## 2.3.0 — 2026-10-31
+
 - Standardisation pass: one brand accent token (`--rt-accent`) across theme and
   reports (was an off-brand red fallback), print rules on the Access sheet,
   larger Access touch targets, a live-region loading state, labelled charts
