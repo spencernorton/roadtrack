@@ -13,6 +13,7 @@
 
 :root,
 [data-bs-theme="light"] {
+    --rt-accent: #FD8024;
     --bs-primary: #FD8024;
     --bs-primary-rgb: 253, 128, 36;
     --bs-primary-bg-subtle: #FFEEE1;
@@ -28,6 +29,7 @@
 }
 
 [data-bs-theme="dark"] {
+    --rt-accent: #FD8024;
     --bs-primary: #FD8024;
     --bs-primary-rgb: 253, 128, 36;
     --bs-primary-bg-subtle: #3A1D08;

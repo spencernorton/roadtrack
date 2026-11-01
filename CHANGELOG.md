@@ -5,6 +5,12 @@ Every release's entry here is also its GitHub Release notes. Versions follow
 
 ## Unreleased
 
+- Standardisation pass: one brand accent token (`--rt-accent`) across theme and
+  reports (was an off-brand red fallback), print rules on the Access sheet,
+  larger Access touch targets, a live-region loading state, labelled charts
+  (`role=img`), and ARIA-linked vehicle tabs with an overflow-menu entry for
+  Access. Guarded in `tools/check.py`.
+
 - Require Chromium to operate the real image at desktop and phone widths in
   both themes, including purchase-field persistence, finance, reports and
   collaborator controls.
