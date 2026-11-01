@@ -195,6 +195,24 @@
             addTab('roadtrack-access-tab', access, 'bi-people', 'Access');
             addMobileItem('roadtrack-access-mobile', access, 'bi-people', 'Access',
                           'settings-tab');
+            /* The overflow menu too: checkNavBarOverflow hides bar items at
+               intermediate widths and reveals counterparts here; without one
+               Access simply vanishes there (same trap as the vehicle tabs). */
+            var more = document.querySelector(
+                'ul.nav-tabs.lubelogger-tab .nav-item-more > ul');
+            if (more && !more.querySelector('.roadtrack-access-more')) {
+                var li = document.createElement('li');
+                li.className = 'nav-item roadtrack-access-more';
+                li.setAttribute('role', 'presentation');
+                li.style.display = 'none';
+                var a = document.createElement('a');
+                a.className = 'nav-link';
+                a.href = access;
+                a.innerHTML = '<i class="bi bi-people"></i>' +
+                              '<span class="ms-2">Access</span>';
+                li.appendChild(a);
+                more.appendChild(li);
+            }
             return;
         }
         addVehicleTabs();
@@ -323,6 +341,7 @@
         pane.className = 'tab-pane fade';
         pane.id = spec.pane;
         pane.setAttribute('role', 'tabpanel');
+        pane.setAttribute('aria-labelledby', 'rt' + spec.slug + '-tab');
         pane.tabIndex = 0;
         content.appendChild(pane);
 
@@ -421,6 +440,7 @@
         b.setAttribute('role', 'tab');
         b.setAttribute('data-bs-toggle', 'tab');
         b.setAttribute('data-bs-target', '#' + spec.pane);
+        b.setAttribute('aria-controls', spec.pane);
         b.setAttribute('aria-selected', 'false');
         b.className = isMobile
             ? 'nav-link flex-grow-1 text-start'

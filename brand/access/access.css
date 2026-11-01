@@ -106,8 +106,8 @@
 /* Bigger than Bootstrap's default: this is the only control on the page and
    on a phone it is a touch target. */
 .rt-access input[type="checkbox"] {
-    width: 1.15rem;
-    height: 1.15rem;
+    width: 1.5rem;
+    height: 1.5rem;
     cursor: pointer;
 }
 
@@ -120,4 +120,11 @@
     /* Second column of the Accounts table is an email address, which has no
        break opportunity and would otherwise set the table's width on its own. */
     .rt-access-email { white-space: normal; word-break: break-all; }
+}
+
+/* Print: ink on white like the other Road Track sheets (reports.css). */
+@media print {
+    .rt-access { color: #000; background: #fff; }
+    .rt-access th, .rt-access td { border-bottom-color: #999; color: #000; }
+    @page { margin: 14mm; }
 }

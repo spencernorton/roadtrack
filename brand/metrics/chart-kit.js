@@ -389,6 +389,13 @@ export function chartDrawer() {
     const charts = {};
     const draw = (key, canvas, config) => {
         charts[key]?.destroy();
+        // A canvas alone gives a screen reader nothing; the adjacent table
+        // carries the values, and this names what the chart shows.
+        const labels = ((config.data || {}).datasets || [])
+            .map((d) => d && d.label).filter(Boolean).join(', ');
+        canvas.setAttribute('role', 'img');
+        canvas.setAttribute('aria-label',
+            labels ? `Chart: ${labels}` : 'Chart');
         charts[key] = new Chart(canvas, config);
     };
     draw.destroyAll = () => {

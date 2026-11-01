@@ -225,6 +225,26 @@ def main():
     print(f"  [{'ok ' if not failures else 'FAIL'}] manifest declares 192 and 512 "
           f"icons at their stated sizes")
 
+    # ── Standardisation guards ────────────────────────────────────────
+    # One brand accent everywhere (reports once fell back to an off-brand
+    # red), print rules on every sheet, and the accessibility hooks the
+    # renderers rely on. Text-level on purpose: these are invariants of the
+    # shipped files, not of a rendered page.
+    theme = (BRAND / "roadtrack.css").read_text()
+    if "--rt-accent: #FD8024" not in theme:
+        failures.append("roadtrack.css does not define --rt-accent as the brand orange")
+    reports_css = (BRAND / "reports" / "reports.css").read_text()
+    if "#c8102e" in reports_css:
+        failures.append("reports.css still carries the off-brand red #c8102e")
+    for sheet in ("metrics/metrics.css", "reports/reports.css", "access/access.css"):
+        if "@media print" not in (BRAND / sheet).read_text():
+            failures.append(f"{sheet} has no @media print block")
+    if "aria-controls" not in (BRAND / "roadtrack-ui.js").read_text():
+        failures.append("roadtrack-ui.js pane tabs carry no aria-controls")
+    if "role', 'img'" not in (BRAND / "metrics" / "chart-kit.js").read_text():
+        failures.append("chart-kit.js does not label canvases role=img")
+    print("  [ok ] standardisation guards (accent, print, aria) checked")
+
     if failures:
         print("\nFAILED:")
         for f in failures:
